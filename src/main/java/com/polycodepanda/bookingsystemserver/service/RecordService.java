@@ -5,6 +5,7 @@ import com.polycodepanda.bookingsystemserver.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -14,6 +15,8 @@ public class RecordService {
     private RecordRepository recordRepository;
 
     public Record saveRecord(Record record){
+        System.out.println(record.getBooking_id());
+        record.setGet_time(LocalDateTime.now());
         return recordRepository.save(record);
     }
 
@@ -40,5 +43,12 @@ public class RecordService {
     public String deleteRecord(int id){
         recordRepository.deleteById(id);
         return "record id: "+ id + " deleted.";
+    }
+
+    public Record updateReturn(int id){
+        Record targetRecord = recordRepository.findById(id).orElse(null);
+        targetRecord.setReturn_time(LocalDateTime.now());
+        targetRecord.setReturned("yes");
+        return targetRecord;
     }
 }
