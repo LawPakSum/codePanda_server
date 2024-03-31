@@ -41,6 +41,7 @@ public class InstrumentController {
 
     @DeleteMapping("/deleteInstrument")
     public String deleteInstrument(@RequestBody int id){
+        System.out.println(id);
         return service.deleteInstrument(id);
     }
 

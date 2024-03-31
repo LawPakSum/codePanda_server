@@ -1,5 +1,6 @@
 package com.polycodepanda.bookingsystemserver.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -18,8 +19,10 @@ public class Booking {
 
     @Id
     private int booking_id;
-    private int user_id;
+    @Column(name = "user_id")
+    private int userId;
     private int instrument_id;
     private Date booking_from;
     private Date booking_to;
+    private String picked;
 }

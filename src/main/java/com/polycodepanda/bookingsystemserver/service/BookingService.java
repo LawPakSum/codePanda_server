@@ -1,7 +1,9 @@
 package com.polycodepanda.bookingsystemserver.service;
 
 import com.polycodepanda.bookingsystemserver.entity.Booking;
+import com.polycodepanda.bookingsystemserver.entity.User;
 import com.polycodepanda.bookingsystemserver.repository.BookingRepository;
+import com.polycodepanda.bookingsystemserver.repository.InstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ public class BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+    private InstrumentRepository instrumentRepository;
 
     public Booking saveBooking(Booking booking){
         return bookingRepository.save(booking);
@@ -27,6 +30,10 @@ public class BookingService {
 
     public List<Booking> findBookings(){
         return bookingRepository.findAll();
+    }
+
+    public List<Booking> findBookingByUser(User user){
+        return bookingRepository.findByUserId(user.getUser_id());
     }
 
     public Booking updateBooking(Booking booking){
