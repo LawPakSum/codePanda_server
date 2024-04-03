@@ -65,4 +65,9 @@ public class BookingController {
         }
         return instrumentBookings;
     }
+
+    @PostMapping("/cancelBooking")
+    public Booking cancelBooking(@RequestBody Booking booking){
+        return bookingService.cancelBooking(booking.getBooking_id());
+    }
 }

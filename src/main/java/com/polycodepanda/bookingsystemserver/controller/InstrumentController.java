@@ -1,6 +1,7 @@
 package com.polycodepanda.bookingsystemserver.controller;
 
 import com.polycodepanda.bookingsystemserver.entity.Instrument;
+import com.polycodepanda.bookingsystemserver.entity.User;
 import com.polycodepanda.bookingsystemserver.service.InstrumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +41,9 @@ public class InstrumentController {
     }
 
     @DeleteMapping("/deleteInstrument")
-    public String deleteInstrument(@RequestBody int id){
-        System.out.println(id);
-        return service.deleteInstrument(id);
+    public String deleteInstrument(@RequestBody User user){
+        System.out.println(user.getUser_id());
+        return service.deleteInstrument(user.getUser_id());
     }
 
 }

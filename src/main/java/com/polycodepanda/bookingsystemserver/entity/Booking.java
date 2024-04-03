@@ -23,5 +23,6 @@ public class Booking {
     private int instrument_id;
     private Date booking_from;
     private Date booking_to;
+    private String booking_status;
     private String picked;
 }

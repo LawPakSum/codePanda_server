@@ -47,4 +47,11 @@ public class BookingService {
         bookingRepository.deleteById(id);
         return "Booking id:" + id +" is deleted.";
     }
+
+
+    public Booking cancelBooking(int id){
+        Booking targetBooking = bookingRepository.findById(id).orElse(null);
+        targetBooking.setBooking_status("cancel");
+        return targetBooking;
+    }
 }
