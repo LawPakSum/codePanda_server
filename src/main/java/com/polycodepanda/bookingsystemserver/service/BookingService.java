@@ -3,7 +3,6 @@ package com.polycodepanda.bookingsystemserver.service;
 import com.polycodepanda.bookingsystemserver.entity.Booking;
 import com.polycodepanda.bookingsystemserver.entity.User;
 import com.polycodepanda.bookingsystemserver.repository.BookingRepository;
-import com.polycodepanda.bookingsystemserver.repository.InstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,6 @@ public class BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
-    private InstrumentRepository instrumentRepository;
 
     public Booking saveBooking(Booking booking){
         return bookingRepository.save(booking);
@@ -48,10 +46,10 @@ public class BookingService {
         return "Booking id:" + id +" is deleted.";
     }
 
-
     public Booking cancelBooking(int id){
         Booking targetBooking = bookingRepository.findById(id).orElse(null);
-        targetBooking.setBooking_status("cancel");
+        targetBooking.setBooking_status("canceled");
+        bookingRepository.save(targetBooking);
         return targetBooking;
     }
 }

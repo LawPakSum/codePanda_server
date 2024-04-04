@@ -4,6 +4,7 @@ import com.polycodepanda.bookingsystemserver.entity.Instrument;
 import com.polycodepanda.bookingsystemserver.repository.InstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -43,5 +44,16 @@ public class InstrumentService {
         targetInstrument.setInstrument_borrow_status(instrument.getInstrument_borrow_status());
         targetInstrument.setInstrument_remark(instrument.getInstrument_remark());
         return repository.save(targetInstrument);
+    }
+
+    public String suspendInstrument(@RequestBody Instrument instrument){
+        Instrument targetInstrument = repository.findById(instrument.getInstrument_id()).orElse(null);
+        if(targetInstrument.getInstrument_remark()!="suspend")
+            targetInstrument.setInstrument_remark("suspend");
+        else{
+            targetInstrument.setInstrument_remark("");
+        }
+        repository.save(targetInstrument);
+        return targetInstrument.getInstrument_id() + "suspended";
     }
 }

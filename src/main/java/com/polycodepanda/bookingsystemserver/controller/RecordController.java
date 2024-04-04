@@ -27,6 +27,9 @@ public class RecordController {
 
     @PostMapping("/addRecord")
     public Record addRecord(@RequestBody Record record){
+        Booking targetbooking = bookingService.findBooking(record.getBooking_id());
+        targetbooking.setPicked("yes");
+        bookingService.saveBooking(targetbooking);
         return recordService.saveRecord(record);
     }
 
@@ -56,8 +59,8 @@ public class RecordController {
     }
 
     @PostMapping("/updateReturn")
-    public Record updateReturn(@RequestBody int id){
-        return recordService.updateReturn(id);
+    public Record updateReturn(@RequestBody Record record){
+        return recordService.updateReturn(record.getRecord_id());
     }
 
     @GetMapping("/getRecordInfo")

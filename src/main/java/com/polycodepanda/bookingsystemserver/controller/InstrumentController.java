@@ -42,8 +42,11 @@ public class InstrumentController {
 
     @DeleteMapping("/deleteInstrument")
     public String deleteInstrument(@RequestBody User user){
-        System.out.println(user.getUser_id());
         return service.deleteInstrument(user.getUser_id());
     }
 
+    @PostMapping("/suspendInstrument")
+    public String suspendInstrument(@RequestBody Instrument instrument){
+        return service.suspendInstrument(instrument);
+    }
 }

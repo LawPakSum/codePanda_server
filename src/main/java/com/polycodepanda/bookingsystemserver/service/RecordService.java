@@ -1,6 +1,9 @@
 package com.polycodepanda.bookingsystemserver.service;
 
+import com.polycodepanda.bookingsystemserver.entity.Instrument;
 import com.polycodepanda.bookingsystemserver.entity.Record;
+import com.polycodepanda.bookingsystemserver.repository.BookingRepository;
+import com.polycodepanda.bookingsystemserver.repository.InstrumentRepository;
 import com.polycodepanda.bookingsystemserver.repository.RecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,10 @@ public class RecordService {
 
     @Autowired
     private RecordRepository recordRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
+    @Autowired
+    private InstrumentRepository instrumentRepository;
 
     public Record saveRecord(Record record){
         System.out.println(record.getBooking_id());
@@ -37,6 +44,10 @@ public class RecordService {
         targetRecord.setGet_time(record.getGet_time());
         targetRecord.setReturn_time(record.getReturn_time());
         targetRecord.setReturned(record.getReturned());
+
+        Instrument targetInstrument = instrumentRepository.findById((bookingRepository.findById(targetRecord.getBooking_id()).orElse(null)).getUserId()).orElse(null);
+        targetInstrument.setInstrument_borrow_status("out");
+
         return recordRepository.save(targetRecord);
     }
 
@@ -49,6 +60,11 @@ public class RecordService {
         Record targetRecord = recordRepository.findById(id).orElse(null);
         targetRecord.setReturn_time(LocalDateTime.now());
         targetRecord.setReturned("yes");
-        return targetRecord;
+        Instrument targetInstrument = instrumentRepository.findById((bookingRepository.findById(targetRecord.getBooking_id()).orElse(null)).getUserId()).orElse(null);
+        targetInstrument.setInstrument_borrow_status("storing");
+        instrumentRepository.save(targetInstrument);
+        return recordRepository.save(targetRecord);
+
     }
+
 }

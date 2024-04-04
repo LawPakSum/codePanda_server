@@ -31,15 +31,25 @@ public class UserService {
 
     public User updateUser(User user){
         User targetUser = userRepository.findById(user.getUser_id()).orElse(null);
-        targetUser.setUser_name(user.getUser_name());
-        targetUser.setUser_identity(user.getUser_identity());
-        targetUser.setUser_password(user.getUser_password());
+        targetUser.setUserName(user.getUserName());
+        targetUser.setUserIdentity(user.getUserIdentity());
+        targetUser.setUserPassword(user.getUserPassword());
         return userRepository.save(targetUser);
     }
 
     public String deleteUser(int id){
-        String name = getUserById(id).getUser_name();
+        String name = getUserById(id).getUserName();
         userRepository.deleteById(id);
         return "user id:" + id + ", user name: "+ name + "is deleted.";
+    }
+
+    public String verifyLogin(User user){
+        List<User> targetUsers = userRepository.findByUserNameAndUserPassword(user.getUserName(), user.getUserPassword());
+        if(targetUsers.size() == 1){
+            return targetUsers.get(0).getUserIdentity()+"-"+targetUsers.get(0).getUser_id();
+        }
+        else {
+            return "invalid";
+        }
     }
 }

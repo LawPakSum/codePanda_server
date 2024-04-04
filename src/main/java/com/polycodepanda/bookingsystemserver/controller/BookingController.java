@@ -66,6 +66,21 @@ public class BookingController {
         return instrumentBookings;
     }
 
+    @GetMapping("/getBookingByUsers")
+    public List<InstrumentBooking> getUserBookings(){
+        List<Booking> bookings = bookingService.findBookings();
+        List<InstrumentBooking> instrumentBookings= new ArrayList<>();
+        for(Booking booking: bookings){
+            InstrumentBooking instrumentBooking = new InstrumentBooking();
+            instrumentBooking.setBooking(booking);
+            System.out.println(booking.getInstrument_id());
+            Instrument instrument = instrumentService.getInstrumentByID(booking.getInstrument_id());
+            instrumentBooking.setInstrument(instrument);
+            instrumentBookings.add(instrumentBooking);
+        }
+        return instrumentBookings;
+    }
+
     @PostMapping("/cancelBooking")
     public Booking cancelBooking(@RequestBody Booking booking){
         return bookingService.cancelBooking(booking.getBooking_id());

@@ -43,4 +43,9 @@ public class UserController {
     public String deleteUser(@RequestBody int id){
         return service.deleteUser(id);
     }
+
+    @PostMapping("/verifyLogin")
+    public  String verifyLogin(@RequestBody User user){
+        return service.verifyLogin(user);
+    }
 }

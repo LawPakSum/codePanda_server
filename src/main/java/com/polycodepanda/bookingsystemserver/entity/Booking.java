@@ -17,7 +17,6 @@ public class Booking {
     @Id
     private int booking_id;
 
-    @JoinColumn(name="user_id", referencedColumnName = "user_id")
     @Column(name = "user_id")
     private int userId;
     private int instrument_id;
