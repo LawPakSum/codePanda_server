@@ -1,9 +1,11 @@
 package com.polycodepanda.bookingsystemserver.service;
 
+import com.polycodepanda.bookingsystemserver.entity.Booking;
 import com.polycodepanda.bookingsystemserver.entity.Instrument;
 import com.polycodepanda.bookingsystemserver.repository.InstrumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -55,5 +57,12 @@ public class InstrumentService {
         }
         repository.save(targetInstrument);
         return targetInstrument.getInstrument_id() + "suspended";
+    }
+
+    public Instrument changeStoring(int id){
+        Instrument targetInstrument = repository.findById(id).orElse(null);
+        targetInstrument.setInstrument_borrow_status("out");
+        repository.save(targetInstrument);
+        return targetInstrument;
     }
 }

@@ -2,6 +2,7 @@ package com.polycodepanda.bookingsystemserver.service;
 
 import com.polycodepanda.bookingsystemserver.entity.Instrument;
 import com.polycodepanda.bookingsystemserver.entity.Record;
+import com.polycodepanda.bookingsystemserver.entity.User;
 import com.polycodepanda.bookingsystemserver.repository.BookingRepository;
 import com.polycodepanda.bookingsystemserver.repository.InstrumentRepository;
 import com.polycodepanda.bookingsystemserver.repository.RecordRepository;
@@ -64,7 +65,6 @@ public class RecordService {
         targetInstrument.setInstrument_borrow_status("storing");
         instrumentRepository.save(targetInstrument);
         return recordRepository.save(targetRecord);
-
     }
 
 }

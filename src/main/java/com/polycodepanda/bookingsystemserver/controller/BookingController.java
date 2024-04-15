@@ -6,10 +6,15 @@ import com.polycodepanda.bookingsystemserver.entity.InstrumentBooking;
 import com.polycodepanda.bookingsystemserver.entity.User;
 import com.polycodepanda.bookingsystemserver.service.BookingService;
 import com.polycodepanda.bookingsystemserver.service.InstrumentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
@@ -20,7 +25,7 @@ public class BookingController {
     private BookingService bookingService;
     @Autowired
     private InstrumentService instrumentService;
-
+    Logger logger = LoggerFactory.getLogger(BookingController.class);
     @PostMapping("/addBooking")
     public Booking addBooking(@RequestBody Booking booking){
         return bookingService.saveBooking(booking);
@@ -84,5 +89,20 @@ public class BookingController {
     @PostMapping("/cancelBooking")
     public Booking cancelBooking(@RequestBody Booking booking){
         return bookingService.cancelBooking(booking.getBooking_id());
+    }
+
+    @PostMapping("/getBookingTime")
+    public List<Date> getBookingTime(@RequestBody Booking booking){
+        List <Booking> bookings = bookingService.findBookings();
+        List <Date> targetBookings = new ArrayList<>();
+
+        for(Booking b: bookings){
+            if(b.getBooking_status().equals("available") &&
+            booking.getBooking_from().before(b.getBooking_from()) &&
+            booking.getBooking_to().after(b.getBooking_from())){
+                targetBookings.add(b.getBooking_from());
+            }
+        }
+        return targetBookings;
     }
 }

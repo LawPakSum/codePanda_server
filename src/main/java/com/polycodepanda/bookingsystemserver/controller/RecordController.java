@@ -9,8 +9,10 @@ import com.polycodepanda.bookingsystemserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -30,7 +32,9 @@ public class RecordController {
         Booking targetbooking = bookingService.findBooking(record.getBooking_id());
         targetbooking.setPicked("yes");
         bookingService.saveBooking(targetbooking);
-        return recordService.saveRecord(record);
+        Record targetRecord = recordService.saveRecord(record);
+        instrumentService.changeStoring(targetbooking.getInstrument_id());
+        return targetRecord;
     }
 
     @PostMapping("/addRecords")
@@ -80,5 +84,25 @@ public class RecordController {
 
         }
         return bookingRecords;
+    }
+
+    @PostMapping("/checkBorrowAllow")
+    public Boolean checkBorrowAllow(@RequestBody User user) {
+        List <Record> records = recordService.getRecords();
+        List <Booking> bookings = bookingService.findBookingByUser(user);
+        List <Record> notReturned = new ArrayList<>();
+        for (Record r : records){
+            if(r.getReturned().equals("no")){
+                notReturned.add(r);
+            }
+        }
+        for (Record r: notReturned){
+            for (Booking b: bookings){
+                if (r.getBooking_id() == b.getBooking_id()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
